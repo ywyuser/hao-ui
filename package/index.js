@@ -1,5 +1,9 @@
 
 import Button from './button/index.js';
+import Run from './run/index.js';
+import Vuerun from './vuerun/index.js';
+import Lodash from './lodash/index.js';
+import NativeTool from './nativeTool/index.js';
 import collapseTransition from './collapse-transition/collapse-transition.js';
 import Message from './message/index.js';
 import BreadCrumb from './breadCrumb/index'
@@ -7,6 +11,10 @@ import ModalMore from './ModalMore/index'
 import PayPwd from './payPwd/index'
 
 const components = [
+  Vuerun,
+  Run,
+  NativeTool,
+  Lodash,
   Button,
   BreadCrumb,
   ModalMore,
@@ -21,6 +29,10 @@ const install = function(Vue) {
 
 export default {
   install,
+  NativeTool,
+  Vuerun,
+  Run,
+  Lodash,
   Button,
   Message,
   BreadCrumb,
