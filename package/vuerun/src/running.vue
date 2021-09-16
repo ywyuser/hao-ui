@@ -87,3 +87,13 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+
+.hello{
+  .code-box{
+    height: 800px;
+    width:400px
+  }
+
+}
+</style>

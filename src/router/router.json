@@ -86,9 +86,19 @@
       "name": "run",
       "path": "/run",
       "desc": "run"
+    },
+    {
+      "name": "htmlpanel",
+      "path": "/htmlpanel",
+      "desc": "htmlpanel"
     }
   ],
   "笔记": [
+    {
+      "name": "vuenote",
+      "path": "/vuenote",
+      "desc": "vuenote"
+    },
     {
       "name": "create",
       "path": "/create",

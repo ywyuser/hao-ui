@@ -6,7 +6,10 @@
         <Menu></Menu>
       </div>
       <div class="app-main-right" id="app-main-right">
-        <router-view/>
+        <keep-alive>
+
+          <router-view/>
+        </keep-alive>
       </div>
     </div>
     <div v-if="isShowHome">

@@ -1,5 +1,7 @@
 
 import Button from './button/index.js';
+import Htmlpanel from './htmlpanel/index.js';
+import Vuenote from './vuenote/index.js';
 import Run from './run/index.js';
 import Vuerun from './vuerun/index.js';
 import Lodash from './lodash/index.js';
@@ -12,6 +14,8 @@ import PayPwd from './payPwd/index'
 
 const components = [
   Vuerun,
+  Vuenote,
+  Htmlpanel,
   Run,
   NativeTool,
   Lodash,
@@ -30,6 +34,8 @@ const install = function(Vue) {
 export default {
   install,
   NativeTool,
+  Vuenote,
+  Htmlpanel,
   Vuerun,
   Run,
   Lodash,

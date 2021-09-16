@@ -23,7 +23,7 @@
 </template>
 <script>
   const nativeTool = require.context(
-    "./utils",
+    "@/util/nativeTool",
     false,
     /\.js$/
   );
@@ -32,7 +32,7 @@
     console.log('key', key);
     const name = key.slice(2, -3);
 
-    nativeToolPath[name] = require("./utils" + key.slice(1));
+    nativeToolPath[name] = require("@/util/nativeTool" + key.slice(1));
   });
 
   console.log('nativeToolPath', nativeToolPath);

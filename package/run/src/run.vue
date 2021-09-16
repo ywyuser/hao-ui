@@ -1,9 +1,21 @@
 <template>
   <div>
+    <el-dropdown @command="handleCommand">
+      <span class="el-dropdown-link">
+        {{lang[id]}}<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="0">javascript</el-dropdown-item>
+        <el-dropdown-item command="1">html</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
 
     <textarea ref="mycode" class="codesql" v-model="code" style="height:200px;width:600px;"></textarea>
     <h-button @click="sure">run</h-button>
       <pre>{{ JSON.stringify(res, null, 4).slice(1,-1)}}</pre>
+      <textarea ref="mycode1" class="codesql" v-model="res" style="height:200px;width:600px;"></textarea>
+
+
   </div>
 </template>
 
@@ -11,13 +23,15 @@
   import "codemirror/theme/ambiance.css";
   import "codemirror/lib/codemirror.css";
   import "codemirror/addon/hint/show-hint.css";
-
+import {htmlToObj} from "@/util/htmlTransform.js"
   let CodeMirror = require("codemirror/lib/codemirror");
   require("codemirror/addon/edit/matchbrackets");
   require("codemirror/addon/selection/active-line");
   require("codemirror/mode/sql/sql");
   require("codemirror/addon/hint/show-hint");
   require("codemirror/addon/hint/sql-hint");
+
+
   let res=[]
   function log(w){
     console.log('w',w);
@@ -28,17 +42,19 @@
         name: "HRun",
       data () {
         return {
+          id:'0',
           result:'',
           code: '',
           editor:null,
-          res:res
+          res:res,
+          lang:{"0":'javascript',"1":'html'}
         }
       },
       mounted () {
        // debugger
         //let theme = 'ambiance'//设置主题，不设置的会使用默认主题
         let editor = CodeMirror.fromTextArea(this.$refs.mycode, {
-          mode: "text/javascript",//选择对应代码编辑器的语言，我这边选的是数据库，根据个人情况自行设置即可
+          mode: "text/html",//选择对应代码编辑器的语言，我这边选的是数据库，根据个人情况自行设置即可
           indentWithTabs: true,
           smartIndent: true,
           lineNumbers: true,
@@ -62,16 +78,32 @@
       methods: {
 
         sure(){
-          this.res.length=0
-          console.log('code',this.editor.getValue());
-          eval(this.editor.getValue())
+          if (this.id=='0') {
 
+            this.res.length=0
+            console.log('code',this.editor.getValue());
+            eval(this.editor.getValue())
+          }else{
+                 console.log('tyxl',typeof htmlToObj);
+              log(htmlToObj(this.editor.getValue()))
+          }
+
+        },
+        handleCommand(command) {
+          this.id=command
         }
       },
     }
 </script>
 
 <style>
+    .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
   .codesql {
     font-size: 11pt;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
