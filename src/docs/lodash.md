@@ -15,7 +15,7 @@
 https://github.com/lodash/lodash
 
 <div class="demo-block">
-  <h-lodash/>
+  <h-lodash>
 
 </div>
 

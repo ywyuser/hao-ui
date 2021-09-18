@@ -1,88 +1,55 @@
 
-let sign_enum = {
-  SIGN_END: "SIGN_END",
-  SIGN_END_OK: "SIGN_EN_OK",
-  SIGN_START: "SIGN_START",
-  SIGN_START_OK: "SIGN_START_OK",
-};
-
-function htmlToObj(htmlStr) {
-  const str = htmlStr.replace(/\n/g, "");
-  let result = { nodeName: "root", children: [] };
-  let use_line = [0];
-  let current_index = 0;            // 记录当前插入children的下标
-  let node = result;                // 当前操作的节点
-  let sign = "";                    // 标记标签字符串（可能包含属性字符）、文本信息
-  let status = "";                  // 当前状态，为空的时候我们认为是在读取当前节点（node）的文本信息
-  for (var i = 0; i < str.length; i++) {
-    var current = str.charAt(i);
-    var next = str.charAt(i + 1);
-    if (current === "<") {
-      // 在开始标签完成后记录文本信息到当前节点
-      if (sign && status === sign_enum.SIGN_START_OK) {
-        node.text = sign;
-        sign = "";
-      }
-      // 根据“</”来区分是 结束标签的（</xxx>）读取中  还是开始的标签(<xxx>) 读取中
-      if (next === "/") {
-        status = sign_enum.SIGN_END;
-      } else {
-        status = sign_enum.SIGN_START;
-      }
-    } else if (current === ">") {
-      // (<xxx>) 读取中，遇到“>”， (<xxx>) 读取中完成
-      if (status === sign_enum.SIGN_START) {
-        // 记录当前node所在的位置，并更改node
-        node = result;
-        use_line.map((_, index) => {
-          if (!node.children) node.children = [];
-          if (index === use_line.length - 1) {
-            sign = sign.replace(/^\s*/g, "").replace(/\"/g, "");
-            let mark = sign.match(/^[a-zA-Z0-9]*\s*/)[0].replace(/\s/g, ""); // 记录标签
-            // 标签上定义的属性获取
-            let attributeStr = sign.replace(mark, '').replace(/\s+/g, ",").split(",");
-            let attrbuteObj = {};
-            let style = {};
-            attributeStr.map(attr => {
-              if (attr) {
-                let value = attr.split("=")[1];
-                let key = attr.split("=")[0];
-                if (key === "style") {
-                  value.split(";").map(s => {
-                    if (s) {
-                      style[s.split(":")[0]] = s.split(":")[1]
-                    }
-                  })
-                  return attrbuteObj[key] = style;
-                }
-                attrbuteObj[key] = value;
-              }
-            })
-            node.children.push({ nodeName: mark, children: [], ...attrbuteObj })
+function parseTag(sign) {
+  sign = sign.replace(/^\s*/g, "").replace(/\"/g, "");
+  let mark = sign.match(/([a-zA-Z0-9]|-)+\s*/)[0].replace(/\s/g, ""); // 记录标签
+  console.log('sign',sign);
+  console.log('mark',mark);
+  // 标签上定义的属性获取
+  let parse = RegExp(mark + "|/>|>","g");
+  let attributeStr = sign.replace(parse, '').replace(/\s+/g, ",").split(",");
+  let attrbuteObj = {};
+  let style = {};
+  attributeStr.map(attr => {
+    if (attr) {
+      let value = attr.split("=")[1];
+      let key = attr.split("=")[0];
+      if (key === "style") {
+        value.split(";").map(s => {
+          if (s) {
+            style[s.split(":")[0]] = s.split(":")[1]
           }
-          current_index = node.children.length - 1;
-          node = node.children[current_index];
-        });
-        use_line.push(current_index);
-        sign = "";
-        status = sign_enum.SIGN_START_OK;
+        })
+        return attrbuteObj[key] = style;
       }
-      // (</xxx>) 读取中，遇到“>”， (</xxx>) 读取中完成
-      if (status === sign_enum.SIGN_END) {
-        use_line.pop();
-        node = result;
-        // 重新寻找操作的node
-        use_line.map((i) => {
-          node = node.children[i];
-        });
-        sign = "";
-        status = sign_enum.SIGN_END_OK;
-      }
-    } else {
-      sign = sign + current;
+      attrbuteObj[key] = value;
+    }
+  })
+  return { nodeName: mark, children: [], ...attrbuteObj }
+}
+function parseHtml(htmlStr, result,head=0) {
+  while (head <= htmlStr.length - 1) {
+    if(htmlStr[head].indexOf("</")> -1 ){
+      head = head + 1
+      break
+    } else if (htmlStr[head].match(/\/\s*>/)) {
+      result.children.push(parseTag(htmlStr[head]))
+      head = head + 1
+    }else if (head < htmlStr.length - 1 && htmlStr[head + 1].indexOf("</") > -1 && (htmlStr[head + 1].match(/^[a-zA-Z0-9]*\s*/)[0].replace(/\s/g, "") === htmlStr[head].match(/^[a-zA-Z0-9]*\s*/)[0].replace(/\s/g, ""))) {
+      result.children.push(parseTag(htmlStr[head]))
+      head = head + 2
+    } else{
+      result.children.push(parseTag(htmlStr[head]))
+      head = parseHtml(htmlStr,result.children[result.children.length-1],head+1)
     }
   }
-  return result;
+  return head
+}
+function htmlToObj(htmlStr0) {
+  const htmlStr1 = htmlStr0.match(/<[^>]+>/gi)
+  let result = { nodeName: "root", children: [] };
+  console.log(htmlStr1);
+   parseHtml(htmlStr1, result)
+   return result
 }
 // console.dir(htmlStrParser(htmlStr))
 // fs.writeFileSync("htmlObj.text", JSON.stringify(htmlStrParser(htmlStr)))
