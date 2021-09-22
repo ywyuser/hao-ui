@@ -2,10 +2,8 @@
 function parseTag(sign) {
   sign = sign.replace(/^\s*/g, "").replace(/\"/g, "");
   let mark = sign.match(/([a-zA-Z0-9]|-)+\s*/)[0].replace(/\s/g, ""); // 记录标签
-  console.log('sign',sign);
-  console.log('mark',mark);
   // 标签上定义的属性获取
-  let parse = RegExp(mark + "|/>|>","g");
+  let parse = RegExp("<"+mark + "|/>|>","g");
   let attributeStr = sign.replace(parse, '').replace(/\s+/g, ",").split(",");
   let attrbuteObj = {};
   let style = {};

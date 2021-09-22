@@ -12,7 +12,7 @@
     <h-button @click="sure">run</h-button>
 
     <textarea ref="mycode" class="codesql" v-model="code" style="height:200px;width:600px;"></textarea>
-    <pre>{{ res}}</pre>
+    <pre>{{ JSON.stringify(res,null,4).replace(/\"|\:|\[|\]|\,/g,"").replace(/\:/g," ").slice(7,-2)}}</pre>
     <textarea ref="mycode1" class="codesql1" v-model="res" style="height:200px;width:600px;"></textarea>
 
 
@@ -46,7 +46,12 @@
       return {
         id: '0',
         result: '',
-        code: '',
+        code: `  <img11 class="item1"></img11>
+  <img11/>
+  <div11 class="item2" info="质感边框">
+     <div22 class="item3" style="bd:dd;d:dd" ><div33></div33></div22>
+  </div11>
+  <img11 class="item4"/>`,
         editor: null,
         res: res,
         lang: { "0": 'javascript', "1": 'html' }
@@ -87,9 +92,10 @@
           eval(this.editor.getValue())
         } else {
           this.res.length = 0
-          console.log('dddd',htmlToObj(this.editor.getValue()));
-            //  console.log(this.getCss(htmlToObj(this.editor.getValue())))
-          log(JSON.stringify(htmlToObj(this.editor.getValue()), null, 4).slice(1, -1))
+          console.log('dddd', htmlToObj(this.editor.getValue()).children);
+          console.log('SS', this.getCss(htmlToObj(this.editor.getValue()).children))
+          let css = this.getCss(htmlToObj(this.editor.getValue()).children)
+          log(this.getCss(htmlToObj(this.editor.getValue()).children))
         }
 
       },
@@ -101,11 +107,13 @@
         for (const item of obj) {
           if (item.class) {
             if (item.children.length) {
-              res[item.class] = getCss(item.children)
+              res['.' + item.class] = this.getCss(item.children)
+            } else {
+              res['.' + item.class] = {}
             }
           } else {
             if (item.children.length) {
-              res[''] = getCss(item.children)
+              res = { ...res, ...this.getCss(item.children) }
             }
           }
         }
@@ -124,6 +132,8 @@
   .el-icon-arrow-down {
     font-size: 12px;
   }
+
+
 
   .codesql {
     font-size: 11pt;
