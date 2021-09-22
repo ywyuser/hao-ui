@@ -3,6 +3,13 @@
     <quill-editor v-model="value"></quill-editor>
     <h-button @click="sure">run</h-button>
       <pre>{{ JSON.stringify(res, null, 4)}}</pre>
+      <iframe    name="iframeMap"
+    width="100%"
+    height="470px"
+    frameborder="0"
+    scrolling="no"
+src="static/edit-online/index.html" ></iframe>
+
   </div>
 </template>
 <script>

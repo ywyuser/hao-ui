@@ -26,3 +26,13 @@ var a = {
 }
 var b = clone(a);
 console.log(b)
+var value = `
+  <img11 class="item1"></img11>
+  <img11/>
+  <div11 class="item2" info="质感边框">
+     <div22 class="item3" style="bd:dd;d:dd" ><div33></div33></div22>
+  </div11>
+  <img11 class="item4"/>
+  `
+
+  console.log('dddd'.indexOf(""));

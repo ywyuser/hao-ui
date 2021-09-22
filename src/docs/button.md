@@ -2,7 +2,7 @@
   .demo-block {
     >div {
       margin-bottom: 20px;
-      
+
       &:last-child {
         margin-bottom: 0;
       }
@@ -28,7 +28,7 @@
     <h-button type="warning">警告按钮</h-button>
     <h-button type="danger">危险按钮</h-button>
   </div>
-  
+
   <div>
     <h-button plain>朴素按钮</h-button>
     <h-button type="primary" plain>主要按钮</h-button>
@@ -37,7 +37,7 @@
     <h-button type="warning" plain>警告按钮</h-button>
     <h-button type="danger" plain>危险按钮</h-button>
   </div>
-  
+
   <div>
     <h-button round>圆角按钮</h-button>
     <h-button type="primary" round>主要按钮</h-button>
@@ -46,7 +46,7 @@
     <h-button type="warning" round>警告按钮</h-button>
     <h-button type="danger" round>危险按钮</h-button>
   </div>
-  
+
   <div>
     <h-button icon="h-icon-app" circle></h-button>
     <h-button type="primary" icon="h-icon-sql" circle></h-button>
@@ -57,7 +57,7 @@
   </div>
 </div>
 
-:::demo 
+:::demo
 
 
 
@@ -70,7 +70,7 @@
     <h-button type="warning">警告按钮</h-button>
     <h-button type="danger">危险按钮</h-button>
   </div>
-  
+
   <div>
     <h-button plain>朴素按钮</h-button>
     <h-button type="primary" plain>主要按钮</h-button>
@@ -79,7 +79,7 @@
     <h-button type="warning" plain>警告按钮</h-button>
     <h-button type="danger" plain>危险按钮</h-button>
   </div>
-  
+
   <div>
     <h-button round>圆角按钮</h-button>
     <h-button type="primary" round>主要按钮</h-button>
@@ -88,7 +88,7 @@
     <h-button type="warning" round>警告按钮</h-button>
     <h-button type="danger" round>危险按钮</h-button>
   </div>
-  
+
   <div>
     <h-button icon="h-icon-app" circle></h-button>
     <h-button type="primary" icon="h-icon-sql" circle></h-button>
@@ -113,7 +113,7 @@
      <h-button type="warning" disabled>警告按钮</h-button>
      <h-button type="danger" disabled>危险按钮</h-button>
    </div>
-   
+
    <div>
      <h-button plain disabled>朴素按钮</h-button>
      <h-button type="primary" plain disabled>主要按钮</h-button>
@@ -176,7 +176,7 @@
   <h-button type="primary">上传<i class="h-icon-addition"></i></h-button>
 </div>
 
-:::demo 
+:::demo
 ```html
 <h-button type="primary" icon="h-icon-addition"></h-button>
 <h-button type="primary" icon="h-icon-addition"></h-button>
@@ -206,7 +206,7 @@
   </div>
 </div>
 
-:::demo 
+:::demo
 ```html
 <div>
   <h-button>默认按钮</h-button>

@@ -36,9 +36,7 @@
 
   let res = []
   function log(w) {
-    console.log('w', w);
     res.push(w)
-    console.log(res);
   }
   export default {
     name: "HRun",
@@ -48,8 +46,8 @@
         result: '',
         code: `  <img11 class="item1"></img11>
   <img11/>
-  <div11 class="item2" info="质感边框">
-     <div22 class="item3" style="bd:dd;d:dd" ><div33></div33></div22>
+  <div11 class="item" info="质感边框">
+     <div22 class="item3" style="bd:dd;d:dd" ><div33 class="item3--gg"></div33></div22>
   </div11>
   <img11 class="item4"/>`,
         editor: null,
@@ -102,20 +100,29 @@
       handleCommand(command) {
         this.id = command
       },
-      getCss(obj) {
+      getCss(obj,parentClass) {
+        console.log('par',parentClass);
         let res = {}
         for (const item of obj) {
+          let name=parentClass
           if (item.class) {
+            if (item.class.indexOf(parentClass)===0) {
+              name='&'+item.class.replace(parentClass,"")
+            }else{
+              name=item.class
+            }
             if (item.children.length) {
-              res['.' + item.class] = this.getCss(item.children)
+              res['.' + name] = this.getCss(item.children,item.class)
             } else {
-              res['.' + item.class] = {}
+              res['.' + name] = {}
             }
           } else {
             if (item.children.length) {
-              res = { ...res, ...this.getCss(item.children) }
+              res = { ...res, ...this.getCss(item.children,name) }
             }
           }
+          console.log('name',name);
+
         }
         return res
       }

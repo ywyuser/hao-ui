@@ -2,7 +2,12 @@
   <div class="lodash__content">
     <!-- <h-htmlpanel :url.asyc="url1"></h-htmlpanel>
     <h-htmlpanel :url.asyc="url2"></h-htmlpanel> -->
-    <iframe src="static/dd.html" frameborder="0"></iframe>
+    <iframe    name="iframeMap"
+    width="100%"
+    height="470px"
+    frameborder="0"
+    scrolling="no"
+src="static/edit-online/index.html" ></iframe>
   </div>
 </template>
 <script>
