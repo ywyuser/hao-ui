@@ -7,6 +7,7 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="0">javascript</el-dropdown-item>
         <el-dropdown-item command="1">html</el-dropdown-item>
+        <el-dropdown-item command="2">json</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <h-button @click="sure">run</h-button>
@@ -25,7 +26,8 @@
   import "codemirror/theme/ambiance.css";
   import "codemirror/lib/codemirror.css";
   import "codemirror/addon/hint/show-hint.css";
-  import { htmlToObj } from "@/util/htmlTransform.js"
+  import { htmlToObj } from "@/util/run/htmlTransform.js"
+  import { delQuotes } from "@/util/run/jsonParse.js"
   let CodeMirror = require("codemirror/lib/codemirror");
   require("codemirror/addon/edit/matchbrackets");
   require("codemirror/addon/selection/active-line");
@@ -52,7 +54,7 @@
   <img11 class="item4"/>`,
         editor: null,
         res: res,
-        lang: { "0": 'javascript', "1": 'html' }
+        lang: { "0": 'javascript', "1": 'html',"2":'json' }
       }
     },
     mounted() {
@@ -88,12 +90,15 @@
           this.res.length = 0
           console.log('code', this.editor.getValue());
           eval(this.editor.getValue())
-        } else {
+        } else if(this.id == '1') {
           this.res.length = 0
           console.log('dddd', htmlToObj(this.editor.getValue()).children);
           console.log('SS', this.getCss(htmlToObj(this.editor.getValue()).children))
           let css = this.getCss(htmlToObj(this.editor.getValue()).children)
           log(this.getCss(htmlToObj(this.editor.getValue()).children))
+        }else if(this.id == '2'){
+          this.res.length = 0
+          log(delQuotes(this.editor.getValue()))
         }
 
       },
