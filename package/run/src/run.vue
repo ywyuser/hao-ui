@@ -5,8 +5,8 @@
         {{lang[id]}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="0">javascript</el-dropdown-item>
-        <el-dropdown-item command="1">html</el-dropdown-item>
+        <el-dropdown-item command="0">html</el-dropdown-item>
+        <el-dropdown-item command="1">javascript</el-dropdown-item>
         <el-dropdown-item command="2">json</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -54,7 +54,7 @@
   <img11 class="item4"/>`,
         editor: null,
         res: res,
-        lang: { "0": 'javascript', "1": 'html',"2":'json' }
+        lang: { "0": 'html', "1": 'javascript',"2":'json' }
       }
     },
     mounted() {
@@ -85,12 +85,12 @@
     methods: {
 
       sure() {
-        if (this.id == '0') {
+        if (this.id == '1') {
 
           this.res.length = 0
           console.log('code', this.editor.getValue());
           eval(this.editor.getValue())
-        } else if(this.id == '1') {
+        } else if(this.id == '0') {
           this.res.length = 0
           console.log('dddd', htmlToObj(this.editor.getValue()).children);
           console.log('SS', this.getCss(htmlToObj(this.editor.getValue()).children))
@@ -113,13 +113,18 @@
           if (item.class) {
             if (item.class.indexOf(parentClass)===0) {
               name='&'+item.class.replace(parentClass,"")
+              if (item.children.length) {
+                res[name] = this.getCss(item.children,item.class)
+              } else {
+                res[name] = {}
+              }
             }else{
               name=item.class
-            }
-            if (item.children.length) {
-              res['.' + name] = this.getCss(item.children,item.class)
-            } else {
-              res['.' + name] = {}
+              if (item.children.length) {
+                res['.' + name] = this.getCss(item.children,item.class)
+              } else {
+                res['.' + name] = {}
+              }
             }
           } else {
             if (item.children.length) {
