@@ -46,12 +46,16 @@
       return {
         id: '0',
         result: '',
-        code: `  <img11 class="item1"></img11>
-  <img11/>
-  <div11 class="item" info="质感边框">
-     <div22 class="item3" style="bd:dd;d:dd" ><div33 class="item3--gg"></div33></div22>
-  </div11>
-  <img11 class="item4"/>`,
+        code: `   
+    <div class="c1">
+    <div class="c2 a1">
+      <div class="c4"></div>
+    </div>
+    <div class="c2 a2" sss="dd">
+      <div class="c5" ss="dd"></div>
+    </div>
+    <div class="c3"></div>
+  </div>`,
         editor: null,
         res: res,
         lang: { "0": 'html', "1": 'javascript',"2":'json' }
@@ -86,17 +90,19 @@
 
       sure() {
         if (this.id == '1') {
-
+          //js
           this.res.length = 0
           console.log('code', this.editor.getValue());
           eval(this.editor.getValue())
         } else if(this.id == '0') {
+          //css
           this.res.length = 0
-          console.log('dddd', htmlToObj(this.editor.getValue()).children);
-          console.log('SS', this.getCss(htmlToObj(this.editor.getValue()).children))
+          console.log('-------------', htmlToObj(this.editor.getValue()).children);
+          // console.log('SS', this.getCss(htmlToObj(this.editor.getValue()).children))
           let css = this.getCss(htmlToObj(this.editor.getValue()).children)
           log(this.getCss(htmlToObj(this.editor.getValue()).children))
         }else if(this.id == '2'){
+          //json
           this.res.length = 0
           log(delQuotes(this.editor.getValue()))
         }
@@ -106,24 +112,38 @@
         this.id = command
       },
       getCss(obj,parentClass) {
-        console.log('par',parentClass);
+        // console.log('par',parentClass);
         let res = {}
         for (const item of obj) {
           let name=parentClass
           if (item.class) {
-            if (item.class.indexOf(parentClass)===0) {
-              name='&'+item.class.replace(parentClass,"")
-              if (item.children.length) {
-                res[name] = this.getCss(item.children,item.class)
-              } else {
-                res[name] = {}
-              }
-            }else{
-              name=item.class
-              if (item.children.length) {
-                res['.' + name] = this.getCss(item.children,item.class)
-              } else {
-                res['.' + name] = {}
+         
+            for (const classItem of item.class) {
+              
+              if (classItem.indexOf(parentClass)===0) {
+                name='&'+classItem.replace(parentClass,"")
+                if (res[name]) {
+                  res[name]={}
+                }else{
+
+                  if (item.children.length) {
+  
+                    res[name] = this.getCss(item.children,classItem)
+                  } else {
+                    res[name] = {}
+                  }
+                }
+              }else{
+                name=classItem
+                if (res['.'+name]) {
+                  res['.'+name]={}
+                }else{
+                    if (item.children.length) {
+                      res['.' + name] = this.getCss(item.children,classItem)
+                    } else {
+                      res['.' + name] = {}
+                    }
+                }
               }
             }
           } else {
@@ -131,7 +151,7 @@
               res = { ...res, ...this.getCss(item.children,name) }
             }
           }
-          console.log('name',name);
+          // console.log('name',name);
 
         }
         return res

@@ -1,10 +1,29 @@
+/*
+ * @Author: yuan wenyu
+ * @Version: 1.0.1
+ * @Date: 2021-09-16 15:37:48
+ * @LastEditors: yuan wenyu
+ * @LastEditTime: 2021-12-16 15:28:55
+ * @Description: 
+ */
 
 function parseTag(sign) {
-  sign = sign.replace(/^\s*/g, "").replace(/\"/g, "");
+  let signre=sign.replace( /[\"|']([A-Za-z0-9]|_|-)+(?!\")(\s+)\S+[\"|']/g,(...a)=>{
+  return a[0].replace(/\s+/g,"^")
+  }).replace(/\"/g,"")
+
+  sign=signre
+  // sign = sign.replace(/^\s*/g, "").replace(/\"/g, "");
+  console.log('sign',sign);
+  
   let mark = sign.match(/([a-zA-Z0-9]|-)+\s*/)[0].replace(/\s/g, ""); // 记录标签
+  console.log('mark',mark);
+  
   // 标签上定义的属性获取
   let parse = RegExp("<"+mark + "|/>|>","g");
   let attributeStr = sign.replace(parse, '').replace(/\s+/g, ",").split(",");
+  console.log('attributeStr',attributeStr);
+  
   let attrbuteObj = {};
   let style = {};
   attributeStr.map(attr => {
@@ -14,12 +33,15 @@ function parseTag(sign) {
       if (key === "style") {
         value.split(";").map(s => {
           if (s) {
-            style[s.split(":")[0]] = s.split(":")[1]
+      
+
+              style[s.split(":")[0]] = s.split(':')[1]
+
           }
         })
         return attrbuteObj[key] = style;
       }
-      attrbuteObj[key] = value;
+      attrbuteObj[key] = value.split('^');
     }
   })
   return { nodeName: mark, children: [], ...attrbuteObj }
@@ -43,10 +65,11 @@ function parseHtml(htmlStr, result,head=0) {
   return head
 }
 function htmlToObj(htmlStr0) {
-  const htmlStr1 = htmlStr0.match(/<[^>]+>/gi)
+  const htmlStr1 = htmlStr0.match(/<[^>]+>/gi) //获取标签
   let result = { nodeName: "root", children: [] };
+  parseHtml(htmlStr1, result)
   console.log(htmlStr1);
-   parseHtml(htmlStr1, result)
+
    return result
 }
 // console.dir(htmlStrParser(htmlStr))
